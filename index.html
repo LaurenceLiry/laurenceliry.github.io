@@ -1,7 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>孙元元</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    justify-content: space-around;
+    gap: 10px;
+  }
+  .photo {
+    background: white;
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+</head>
 <body>
-<hl>Hello World</hl>
-<p>I'm hosted with GitHub Pages~</p>
+<div class="gallery">
+  <div class="photo">
+    <img src="image1.jpg" alt="图片1">
+  </div>
+  <!-- 可以继续添加更多图片 -->
+</div>
 </body>
 </html>
