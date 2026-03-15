@@ -1,340 +1,690 @@
-﻿<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<title>UP70必胜</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeBoard | 为 Vibe Coding 而生</title>
+  <meta name="description" content="一把为高密度创作、实时调试与 AI 协作而设计的 Vibecoding 键盘。">
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0a1022;
+      --panel: rgba(10, 16, 34, 0.64);
+      --panel-strong: rgba(13, 20, 40, 0.88);
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f5f7ff;
+      --muted: rgba(245, 247, 255, 0.68);
+      --accent: #66d9ff;
+      --accent-strong: #88f0ff;
+      --accent-warm: #91a8ff;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max-width: 1200px;
+    }
 
-<style>
-html,body{
-	margin:0px;
-	width:100%;
-	height:100%;
-	overflow:hidden;
-	background:#000;
-}
-</style>
+    * {
+      box-sizing: border-box;
+    }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(102, 217, 255, 0.22), transparent 26%),
+        radial-gradient(circle at 80% 20%, rgba(145, 168, 255, 0.28), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(81, 129, 255, 0.2), transparent 28%),
+        linear-gradient(180deg, #040612 0%, #050816 34%, #071022 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 85%);
+      opacity: 0.32;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .shell {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(20px);
+      background: rgba(5, 8, 22, 0.52);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(102, 217, 255, 0.9), rgba(145, 168, 255, 0.9));
+      box-shadow: 0 8px 24px rgba(102, 217, 255, 0.35);
+      position: relative;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.75);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      color: #05111f;
+      background: linear-gradient(135deg, var(--accent-strong), #c7f7ff);
+      box-shadow: 0 14px 34px rgba(102, 217, 255, 0.3);
+    }
+
+    .button-secondary {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .hero {
+      position: relative;
+      padding: 88px 0 56px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.86rem;
+      letter-spacing: 0.04em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-strong);
+      box-shadow: 0 0 18px rgba(136, 240, 255, 0.8);
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      font-weight: 700;
+    }
+
+    .hero-copy p {
+      max-width: 600px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions,
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-actions {
+      margin-top: 32px;
+    }
+
+    .hero-stats {
+      margin-top: 28px;
+    }
+
+    .stat {
+      min-width: 150px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-device {
+      position: relative;
+      padding: 34px;
+      border-radius: 36px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(5, 10, 24, 0.7);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero-device::before,
+    .hero-device::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(30px);
+      z-index: -1;
+    }
+
+    .hero-device::before {
+      width: 220px;
+      height: 220px;
+      right: -40px;
+      top: -40px;
+      background: rgba(102, 217, 255, 0.24);
+    }
+
+    .hero-device::after {
+      width: 220px;
+      height: 220px;
+      left: -60px;
+      bottom: -80px;
+      background: rgba(145, 168, 255, 0.18);
+    }
+
+    .device-caption {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(5, 8, 22, 0.58);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .device-caption span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .orbital {
+      position: absolute;
+      inset: auto auto 28px -22px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 0 14px rgba(255,255,255,0.02);
+      backdrop-filter: blur(10px);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .orbital::before,
+    .orbital::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .orbital::before {
+      width: 10px;
+      height: 10px;
+      left: 18px;
+      top: 18px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 22px rgba(136, 240, 255, 0.9);
+    }
+
+    .orbital::after {
+      inset: 18px;
+      border: 1px dashed rgba(255,255,255,0.16);
+    }
+
+    section {
+      padding: 42px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 26px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 1.02rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      padding: 26px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 40%);
+      pointer-events: none;
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .spec-shell {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .spec-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .spec-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .spec-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .spec-item span {
+      color: var(--muted);
+    }
+
+    .video-card {
+      position: relative;
+      padding: 18px;
+      border-radius: var(--radius-xl);
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .video-card video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 24px;
+      object-fit: cover;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(136, 240, 255, 0.24), transparent 25%),
+        linear-gradient(135deg, #0a1328, #050816 60%, #0a1733);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .video-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .cta {
+      padding: 28px;
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(102, 217, 255, 0.14), rgba(145, 168, 255, 0.12)),
+        rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .footer {
+      padding: 34px 0 52px;
+      color: rgba(245, 247, 255, 0.5);
+      font-size: 0.9rem;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .feature-grid,
+      .spec-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .cta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(calc(100% - 28px), var(--max-width));
+      }
+
+      .hero-device {
+        padding: 20px;
+        border-radius: 28px;
+      }
+
+      .device-caption {
+        position: static;
+        margin-top: 16px;
+      }
+
+      .orbital {
+        display: none;
+      }
+
+      .stat {
+        min-width: calc(50% - 7px);
+      }
+    }
+  </style>
 </head>
 <body>
-<audio id="a1" loop="loop">
-	<source src="C:\Users\dell\Desktop\fireworks-3d\yanhuo.mp3">
-</audio>
-<canvas id="canvas" style="position:absolute;width:100%;height:100%;z-index:8888"></canvas>
-<canvas style="position:absolute;width:100%;height:100%;z-index:9999" class="canvas" ></canvas>
-<div class="overlay">
-  <div class="tabs">
-    <div class="tabs-labels"><span class="tabs-label">Commands</span><span class="tabs-label">Info</span><span class="tabs-label">Share</span></div>
-
-    <div class="tabs-panels">
-      <ul class="tabs-panel commands">
-      </ul>
+  <header class="nav">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="VibeBoard 首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>VibeBoard</span>
+      </a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#features">特性</a>
+        <a href="#video">视频</a>
+        <a href="#specs">规格</a>
+        <a class="button button-secondary" href="#buy">立即体验</a>
+      </nav>
     </div>
-  </div>
-</div>
-<script>
-window.onload=function () {
-	let oA=document.querySelector("#a1");
-	let timer=null;
-	function autoPlay() {
-		if (oA.paused) {
-			oA.paused=false;
-			oA.volume=0.5;
-			oA.play();
-		}else {
-			clearInterval(timer);
-		}
-	}
-	timer=setInterval(autoPlay,1);
-}
-function initVars(){
+  </header>
 
-	pi=Math.PI;
-	ctx=canvas.getContext("2d");
-	canvas.width=canvas.clientWidth;
-	canvas.height=canvas.clientHeight;
-	cx=canvas.width/2;
-	cy=canvas.height/2;
-	playerZ=-25;
-	playerX=playerY=playerVX=playerVY=playerVZ=pitch=yaw=pitchV=yawV=0;
-	scale=600;
-	seedTimer=0;seedInterval=5,seedLife=100;gravity=.02;
-	seeds=new Array();
-	sparkPics=new Array();
-	s="https://cantelope.org/NYE/";
-	for(i=1;i<=10;++i){
-		sparkPic=new Image();
-		sparkPic.src=s+"spark"+i+".png";
-		sparkPics.push(sparkPic);
-	}
-	sparks=new Array();
-	pow1=new Audio(s+"pow1.ogg");
-	pow2=new Audio(s+"pow2.ogg");
-	pow3=new Audio(s+"pow3.ogg");
-	pow4=new Audio(s+"pow4.ogg");
-	frames = 0;
-}
+  <main id="top">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">专为Vibecoding工作流设计</span>
+          <h1>让每一次敲击<br>都更像在编排未来。</h1>
+          <p>
+            VibecodeKeyboard是一把面向AI协作、快速原型、长时间创作与极简桌面的高性能键盘。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#buy">立即预订</a>
+            <a class="button button-secondary" href="#video">查看演示视频</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>1ms</strong>
+              <span>超低延迟输入响应</span>
+            </div>
+            <div class="stat">
+              <strong>75%</strong>
+              <span>为创作优化的紧凑布局</span>
+            </div>
+            <div class="stat">
+              <strong>Hot-Swap</strong>
+              <span>可扩展你的按键手感</span>
+            </div>
+          </div>
+        </div>
 
-function rasterizePoint(x,y,z){
+        <div class="hero-visual">
+          <div class="hero-device">
+            <img src="assets/keyboard-placeholder.svg" alt="VibeBoard 键盘产品示意图，可替换为你的透明 PNG">
+            <div class="device-caption">
+              <div>
+                <strong>可直接替换你的透明 PNG</strong>
+                <span>把 `assets/keyboard-placeholder.svg` 换成你的产品图即可</span>
+              </div>
+              <a class="button button-secondary" href="#specs">查看参数</a>
+            </div>
+          </div>
+          <div class="orbital" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
 
-	var p,d;
-	x-=playerX;
-	y-=playerY;
-	z-=playerZ;
-	p=Math.atan2(x,z);
-	d=Math.sqrt(x*x+z*z);
-	x=Math.sin(p-yaw)*d;
-	z=Math.cos(p-yaw)*d;
-	p=Math.atan2(y,z);
-	d=Math.sqrt(y*y+z*z);
-	y=Math.sin(p-pitch)*d;
-	z=Math.cos(p-pitch)*d;
-	var rx1=-1000,ry1=1,rx2=1000,ry2=1,rx3=0,ry3=0,rx4=x,ry4=z,uc=(ry4-ry3)*(rx2-rx1)-(rx4-rx3)*(ry2-ry1);
-	if(!uc) return {x:0,y:0,d:-1};
-	var ua=((rx4-rx3)*(ry1-ry3)-(ry4-ry3)*(rx1-rx3))/uc;
-	var ub=((rx2-rx1)*(ry1-ry3)-(ry2-ry1)*(rx1-rx3))/uc;
-	if(!z)z=.000000001;
-	if(ua>0&&ua<1&&ub>0&&ub<1){
-		return {
-			x:cx+(rx1+ua*(rx2-rx1))*scale,
-			y:cy+y/z*scale,
-			d:Math.sqrt(x*x+y*y+z*z)
-		};
-	}else{
-		return {
-			x:cx+(rx1+ua*(rx2-rx1))*scale,
-			y:cy+y/z*scale,
-			d:-1
-		};
-	}
-}
+    <section id="features">
+      <div class="shell">
+        <div class="section-head">
+          <h2>不只是键盘，更像一套高密度创作界面。</h2>
+          <p>
+            页面整体走极简、玻璃感、金属质感和深空光效路线，适合展示高端硬件、AI 外设和新一代效率工具。
+            下面这些内容你后续都可以继续替换成真实卖点与数据。
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="card">
+            <h3>实时协作手感</h3>
+            <p>为频繁切换 IDE、终端、AI 对话和调试窗口而优化，输入节奏更稳定，长时间编码更沉浸。</p>
+          </article>
+          <article class="card">
+            <h3>冷静的科技质感</h3>
+            <p>采用高对比暗色背景、精细高光边缘和克制动效，让页面接近 Apple 式产品叙事，同时更偏未来科技。</p>
+          </article>
+          <article class="card">
+            <h3>为展示而设计</h3>
+            <p>首屏大图、参数区、视频区和 CTA 结构完整，适合直接替换为你的真实产品图、宣传片和购买链接。</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-function spawnSeed(){
+    <section id="video">
+      <div class="shell">
+        <div class="section-head">
+          <h2>看它在桌面上发光，而不只是看参数。</h2>
+          <p>
+            这里已经预留了产品视频展示模块。你后续只需要把视频文件放到 `assets/keyboard-demo.mp4`
+            或改成你自己的链接，就能直接展示开箱、打字声、灯效和使用场景。
+          </p>
+        </div>
+        <div class="video-card">
+          <video controls muted playsinline poster="assets/keyboard-placeholder.svg">
+            <source src="assets/keyboard-demo.mp4" type="video/mp4">
+            当前浏览器不支持视频播放。你可以把视频替换为 `assets/keyboard-demo.mp4`。
+          </video>
+          <div class="video-note">
+            <span>视频占位已配置</span>
+            <span>建议替换为 16:9 或 21:9 的产品演示视频</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	seed=new Object();
-	seed.x=-50+Math.random()*100;
-	seed.y=25;
-	seed.z=-50+Math.random()*100;
-	seed.vx=.1-Math.random()*.2;
-	seed.vy=-1.5;//*(1+Math.random()/2);
-	seed.vz=.1-Math.random()*.2;
-	seed.born=frames;
-	seeds.push(seed);
-}
+    <section id="specs">
+      <div class="shell spec-shell">
+        <div class="card">
+          <div class="section-head">
+            <h2>为未来工作流准备的规格。</h2>
+            <p>下面是可直接替换的示例参数结构，你可以改成实际轴体、连接方式、电池和自定义功能。</p>
+          </div>
+          <div class="spec-list">
+            <div class="spec-item">
+              <strong>布局</strong>
+              <span>75% Compact Productivity Layout</span>
+            </div>
+            <div class="spec-item">
+              <strong>连接</strong>
+              <span>USB-C / Bluetooth / 2.4G</span>
+            </div>
+            <div class="spec-item">
+              <strong>键帽与轴体</strong>
+              <span>PBT Keycaps / Hot-Swappable Switches</span>
+            </div>
+            <div class="spec-item">
+              <strong>场景</strong>
+              <span>Vibecoding / 创作 / 剪辑 / 多设备协作</span>
+            </div>
+          </div>
+        </div>
+        <aside class="card">
+          <h3>你后续替换时只需要改这两处</h3>
+          <p>产品图：把 `assets/keyboard-placeholder.svg` 换成你的透明 PNG，并保持文件名一致，页面会自动使用新图。</p>
+          <p style="margin-top: 14px;">产品视频：把视频文件放成 `assets/keyboard-demo.mp4`，或者直接修改 `video` 标签里的 `src`。</p>
+        </aside>
+      </div>
+    </section>
 
-function splode(x,y,z){
+    <section id="buy">
+      <div class="shell">
+        <div class="cta">
+          <div>
+            <div class="eyebrow">Launch Ready</div>
+            <h2 style="margin: 18px 0 0; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.04em;">为你的键盘，准备一个真正像产品发布页的首页。</h2>
+            <p>如果你愿意，我下一步可以继续帮你补购买按钮跳转、滚动动画、更多产品分镜，或者直接接入你的真实素材。</p>
+          </div>
+          <a class="button button-primary" href="mailto:hello@vibeboard.dev">Contact Sales</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-	t=5+parseInt(Math.random()*150);
-	sparkV=1+Math.random()*2.5;
-	type=parseInt(Math.random()*3);
-	switch(type){
-		case 0:
-			pic1=parseInt(Math.random()*10);
-			break;
-		case 1:
-			pic1=parseInt(Math.random()*10);
-			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
-			break;
-		case 2:
-			pic1=parseInt(Math.random()*10);
-			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
-			do{ pic3=parseInt(Math.random()*10); }while(pic3==pic1 || pic3==pic2);
-			break;
-	}
-	for(m=1;m<t;++m){
-		spark=new Object();
-		spark.x=x; spark.y=y; spark.z=z;
-		p1=pi*2*Math.random();
-		p2=pi*Math.random();
-		v=sparkV*(1+Math.random()/6)
-		spark.vx=Math.sin(p1)*Math.sin(p2)*v;
-		spark.vz=Math.cos(p1)*Math.sin(p2)*v;
-		spark.vy=Math.cos(p2)*v;
-		switch(type){
-			case 0: spark.img=sparkPics[pic1]; break;
-			case 1:
-				spark.img=sparkPics[parseInt(Math.random()*2)?pic1:pic2];
-				break;
-			case 2:
-				switch(parseInt(Math.random()*3)){
-					case 0: spark.img=sparkPics[pic1]; break;
-					case 1: spark.img=sparkPics[pic2]; break;
-					case 2: spark.img=sparkPics[pic3]; break;
-				}
-				break;
-		}
-		spark.radius=25+Math.random()*50;
-		spark.alpha=1;
-		spark.trail=new Array();
-		sparks.push(spark);
-	}
-	switch(parseInt(Math.random()*4)){
-		case 0:	pow=new Audio(s+"pow1.ogg"); break;
-		case 1:	pow=new Audio(s+"pow2.ogg"); break;
-		case 2:	pow=new Audio(s+"pow3.ogg"); break;
-		case 3:	pow=new Audio(s+"pow4.ogg"); break;
-	}
-	d=Math.sqrt((x-playerX)*(x-playerX)+(y-playerY)*(y-playerY)+(z-playerZ)*(z-playerZ));
-	pow.volume=1.5/(1+d/10);
-	pow.play();
-}
-
-function doLogic(){
-
-	if(seedTimer<frames){
-		seedTimer=frames+seedInterval*Math.random()*10;
-		spawnSeed();
-	}
-	for(i=0;i<seeds.length;++i){
-		seeds[i].vy+=gravity;
-		seeds[i].x+=seeds[i].vx;
-		seeds[i].y+=seeds[i].vy;
-		seeds[i].z+=seeds[i].vz;
-		if(frames-seeds[i].born>seedLife){
-			splode(seeds[i].x,seeds[i].y,seeds[i].z);
-			seeds.splice(i,1);
-		}
-	}
-	for(i=0;i<sparks.length;++i){
-		if(sparks[i].alpha>0 && sparks[i].radius>5){
-			sparks[i].alpha-=.01;
-			sparks[i].radius/=1.02;
-			sparks[i].vy+=gravity;
-			point=new Object();
-			point.x=sparks[i].x;
-			point.y=sparks[i].y;
-			point.z=sparks[i].z;
-			if(sparks[i].trail.length){
-				x=sparks[i].trail[sparks[i].trail.length-1].x;
-				y=sparks[i].trail[sparks[i].trail.length-1].y;
-				z=sparks[i].trail[sparks[i].trail.length-1].z;
-				d=((point.x-x)*(point.x-x)+(point.y-y)*(point.y-y)+(point.z-z)*(point.z-z));
-				if(d>9){
-					sparks[i].trail.push(point);
-				}
-			}else{
-				sparks[i].trail.push(point);
-			}
-			if(sparks[i].trail.length>5)sparks[i].trail.splice(0,1);
-			sparks[i].x+=sparks[i].vx;
-			sparks[i].y+=sparks[i].vy;
-			sparks[i].z+=sparks[i].vz;
-			sparks[i].vx/=1.075;
-			sparks[i].vy/=1.075;
-			sparks[i].vz/=1.075;
-		}else{
-			sparks.splice(i,1);
-		}
-	}
-	p=Math.atan2(playerX,playerZ);
-	d=Math.sqrt(playerX*playerX+playerZ*playerZ);
-	d+=Math.sin(frames/80)/1.25;
-	t=Math.sin(frames/200)/40;
-	playerX=Math.sin(p+t)*d;
-	playerZ=Math.cos(p+t)*d;
-	yaw=pi+p+t;
-}
-
-function rgb(col){
-
-	var r = parseInt((.5+Math.sin(col)*.5)*16);
-	var g = parseInt((.5+Math.cos(col)*.5)*16);
-	var b = parseInt((.5-Math.sin(col)*.5)*16);
-	return "#"+r.toString(16)+g.toString(16)+b.toString(16);
-}
-
-function draw(){
-
-	ctx.clearRect(0,0,cx*2,cy*2);
-
-	ctx.fillStyle="#ff8";
-	for(i=-100;i<100;i+=3){
-		for(j=-100;j<100;j+=4){
-			x=i;z=j;y=25;
-			point=rasterizePoint(x,y,z);
-			if(point.d!=-1){
-				size=250/(1+point.d);
-				d = Math.sqrt(x * x + z * z);
-				a = 0.75 - Math.pow(d / 100, 6) * 0.75;
-				if(a>0){
-					ctx.globalAlpha = a;
-					ctx.fillRect(point.x-size/2,point.y-size/2,size,size);
-				}
-			}
-		}
-	}
-	ctx.globalAlpha=1;
-	for(i=0;i<seeds.length;++i){
-		point=rasterizePoint(seeds[i].x,seeds[i].y,seeds[i].z);
-		if(point.d!=-1){
-			size=200/(1+point.d);
-			ctx.fillRect(point.x-size/2,point.y-size/2,size,size);
-		}
-	}
-	point1=new Object();
-	for(i=0;i<sparks.length;++i){
-		point=rasterizePoint(sparks[i].x,sparks[i].y,sparks[i].z);
-		if(point.d!=-1){
-			size=sparks[i].radius*200/(1+point.d);
-			if(sparks[i].alpha<0)sparks[i].alpha=0;
-			if(sparks[i].trail.length){
-				point1.x=point.x;
-				point1.y=point.y;
-				switch(sparks[i].img){
-					case sparkPics[0]:ctx.strokeStyle="#f84";break;
-					case sparkPics[1]:ctx.strokeStyle="#84f";break;
-					case sparkPics[2]:ctx.strokeStyle="#8ff";break;
-					case sparkPics[3]:ctx.strokeStyle="#fff";break;
-					case sparkPics[4]:ctx.strokeStyle="#4f8";break;
-					case sparkPics[5]:ctx.strokeStyle="#f44";break;
-					case sparkPics[6]:ctx.strokeStyle="#f84";break;
-					case sparkPics[7]:ctx.strokeStyle="#84f";break;
-					case sparkPics[8]:ctx.strokeStyle="#fff";break;
-					case sparkPics[9]:ctx.strokeStyle="#44f";break;
-				}
-				for(j=sparks[i].trail.length-1;j>=0;--j){
-					point2=rasterizePoint(sparks[i].trail[j].x,sparks[i].trail[j].y,sparks[i].trail[j].z);
-					if(point2.d!=-1){
-						ctx.globalAlpha=j/sparks[i].trail.length*sparks[i].alpha/2;
-						ctx.beginPath();
-						ctx.moveTo(point1.x,point1.y);
-						ctx.lineWidth=1+sparks[i].radius*10/(sparks[i].trail.length-j)/(1+point2.d);
-						ctx.lineTo(point2.x,point2.y);
-						ctx.stroke();
-						point1.x=point2.x;
-						point1.y=point2.y;
-					}
-				}
-			}
-			ctx.globalAlpha=sparks[i].alpha;
-			ctx.drawImage(sparks[i].img,point.x-size/2,point.y-size/2,size,size);
-		}
-	}
-}
-
-function frame(){
-
-	if(frames>100000){
-		seedTimer=0;
-		frames=0;
-	}
-	frames++;
-	draw();
-	doLogic();
-	requestAnimationFrame(frame);
-}
-
-window.addEventListener("resize",()=>{
-	canvas.width=canvas.clientWidth;
-	canvas.height=canvas.clientHeight;
-	cx=canvas.width/2;
-	cy=canvas.height/2;
-});
-
-
-initVars();
-frame();
-</script>
-<script src="js/index.js"></script>
-
+  <footer class="footer">
+    <div class="shell">VibeBoard Product Page Concept. Replace placeholder image and video with your final assets.</div>
+  </footer>
 </body>
 </html>

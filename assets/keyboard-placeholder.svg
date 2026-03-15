@@ -1,0 +1,50 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" rx="64" fill="url(#bg)"/>
+  <g opacity="0.9">
+    <ellipse cx="800" cy="540" rx="460" ry="120" fill="url(#glow)"/>
+    <rect x="330" y="290" width="940" height="360" rx="42" fill="url(#body)" stroke="#FFFFFF" stroke-opacity="0.18"/>
+    <rect x="370" y="330" width="860" height="280" rx="30" fill="#0B1530" stroke="#4DCFFF" stroke-opacity="0.16"/>
+  </g>
+  <g opacity="0.95">
+    <rect x="418" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="510" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="602" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="694" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="786" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="878" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="970" y="374" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="1062" y="374" width="126" height="60" rx="16" fill="#0F2144"/>
+
+    <rect x="438" y="454" width="94" height="60" rx="16" fill="#11264D"/>
+    <rect x="550" y="454" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="642" y="454" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="734" y="454" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="826" y="454" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="918" y="454" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="1010" y="454" width="178" height="60" rx="16" fill="#11264D"/>
+
+    <rect x="458" y="534" width="124" height="60" rx="16" fill="#11264D"/>
+    <rect x="600" y="534" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="692" y="534" width="74" height="60" rx="16" fill="#0F2144"/>
+    <rect x="784" y="534" width="258" height="60" rx="16" fill="#153267"/>
+    <rect x="1060" y="534" width="128" height="60" rx="16" fill="#11264D"/>
+  </g>
+  <text x="800" y="180" fill="#EAF9FF" font-family="Arial, sans-serif" font-size="58" font-weight="700" text-anchor="middle">Replace With Your Transparent PNG</text>
+  <text x="800" y="235" fill="#7BDFFF" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">assets/keyboard-placeholder.svg</text>
+  <defs>
+    <linearGradient id="bg" x1="180" y1="80" x2="1378" y2="908" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#091127"/>
+      <stop offset="0.5" stop-color="#050A18"/>
+      <stop offset="1" stop-color="#0C1A37"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(800 540) rotate(90) scale(120 460)">
+      <stop stop-color="#51D6FF" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#51D6FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="body" x1="330" y1="290" x2="1239" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A274A"/>
+      <stop offset="0.55" stop-color="#0A1228"/>
+      <stop offset="1" stop-color="#14254A"/>
+    </linearGradient>
+  </defs>
+</svg>
